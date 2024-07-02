@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel de Administração</title>
+</head>
+<body>
+    <h1>Painel de Administração</h1>
+    <h2>Gerenciamento de Usuários</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome de Usuário</th>
+                <th>Email</th>
+                <th>Nível de Acesso</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($users as $user): ?>
+                <tr>
+                    <td><?= $this->escapeHtml($user['user_id']) ?></td>
+                    <td><?= $this->escapeHtml($user['username']) ?></td>
+                    <td><?= $this->escapeHtml($user['email']) ?></td>
+                    <td><?= $this->escapeHtml($user['access_level_id']) ?></td>
+                    <td>
+                        <a href="/admin/edit-user/<?= $this->escapeHtml($user['user_id']) ?>">Editar</a>
+                        <a href="/admin/delete-user/<?= $this->escapeHtml($user['user_id']) ?>">Excluir</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</body>
+</html>

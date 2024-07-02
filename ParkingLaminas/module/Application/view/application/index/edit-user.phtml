@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Usuário</title>
+</head>
+<body>
+    <h1>Editar Usuário</h1>
+    <form action="" method="post">
+        <label for="username">Nome de Usuário:</label>
+        <input type="text" id="username" name="username" value="<?= $this->escapeHtml($user['username']) ?>" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" value="<?= $this->escapeHtml($user['email']) ?>" required><br><br>
+
+        <label for="access_level_id">Nível de Acesso:</label>
+        <input type="number" id="access_level_id" name="access_level_id" value="<?= $this->escapeHtml($user['access_level_id']) ?>" required><br><br>
+
+        <input type="submit" value="Atualizar">
+    </form>
+
+    <?php if (isset($message)): ?>
+        <p><?php echo $this->escapeHtml($message); ?></p>
+    <?php endif; ?>
+</body>
+</html>

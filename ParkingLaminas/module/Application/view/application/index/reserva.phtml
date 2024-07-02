@@ -1,0 +1,32 @@
+<!-- module/Application/view/application/index/reserva.phtml -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reserva de Vaga</title>
+</head>
+<body>
+    <h1>Reserva de Vaga</h1>
+    <form action="/reserva" method="post">
+        <label for="spot_id">Vaga de Estacionamento:</label>
+        <select id="spot_id" name="spot_id" required>
+            <?php foreach ($parkingSpots as $spot): ?>
+                <option value="<?= $spot['spot_id'] ?>"><?= $spot['spot_number'] ?></option>
+            <?php endforeach; ?>
+        </select><br><br>
+
+        <label for="check_in_time">Hora de Entrada:</label>
+        <input type="datetime-local" id="check_in_time" name="check_in_time" required><br><br>
+
+        <label for="check_out_time">Hora de Saída:</label>
+        <input type="datetime-local" id="check_out_time" name="check_out_time" required><br><br>
+
+        <input type="submit" value="Reservar">
+    </form>
+
+    <?php if (isset($message)): ?>
+        <p><?php echo $this->escapeHtml($message); ?></p>
+    <?php endif; ?>
+</body>
+</html>
