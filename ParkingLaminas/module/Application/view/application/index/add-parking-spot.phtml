@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Adicionar Vaga</title>
+</head>
+<body>
+    <h1>Adicionar Vaga</h1>
+
+    <form action="" method="post">
+        <label for="spot_number">Número da Vaga:</label>
+        <input type="text" id="spot_number" name="spot_number" required>
+
+        <button type="submit">Adicionar</button>
+    </form>
+
+    <?php if (!empty($message)): ?>
+        <p><?= $this->escapeHtml($message) ?></p>
+    <?php endif; ?>
+</body>
+</html>

@@ -19,6 +19,13 @@ class IndexController extends AbstractActionController
 
     public function indexAction()
     {
+        $session = new Container('user');
+
+        // Verifica se o usuário está logado e se é administrador
+        if (!$session->offsetExists('userId') || $session->accessLevelId != 1) {
+            return $this->redirect()->toRoute('login');
+        }
+
         return new ViewModel();
     }
     public function parkingAction()
@@ -228,6 +235,8 @@ class IndexController extends AbstractActionController
             'users' => $users,
         ]);
     }
+    
+
     public function editUserAction()
     {
         if (!$this->isAdmin()) {
@@ -297,5 +306,147 @@ class IndexController extends AbstractActionController
         }
 
         return $this->redirect()->toRoute('admin-panel');
+    }
+    public function reportsAction()
+    {
+        if (!$this->isAdmin()) {
+            return $this->redirect()->toRoute('home'); // Redirecionar para a página inicial se não for administrador
+        }
+
+        $adapter = $this->dbAdapter;
+        $sql = 'SELECT psusage.*, users.username, parking_spots.spot_number
+                FROM psusage
+                JOIN users ON psusage.user_id = users.user_id
+                JOIN parking_spots ON psusage.spot_id = parking_spots.spot_id';
+        $statement = $adapter->createStatement($sql);
+        $reportData = $statement->execute()->getResource()->fetchAll();
+
+        $sqlFinance = 'SELECT user_id, SUM(amount) as total_amount, plan_id FROM psusage GROUP BY user_id, plan_id';
+        $statementFinance = $adapter->createStatement($sqlFinance);
+        $financialReport = $statementFinance->execute()->getResource()->fetchAll();
+
+        return new ViewModel([
+            'reportData' => $reportData,
+            'financialReport' => $financialReport,
+        ]);
+    }
+    public function adminParkingSpotsAction()
+    {
+        if (!$this->isAdmin()) {
+            return $this->redirect()->toRoute('home'); // Redirecionar para a página inicial se não for administrador
+        }
+
+        $adapter = $this->dbAdapter;
+        $sql = 'SELECT * FROM parking_spots';
+        $statement = $adapter->createStatement($sql);
+        $parkingSpots = $statement->execute()->getResource()->fetchAll();
+
+        return new ViewModel([
+            'parkingSpots' => $parkingSpots,
+        ]);
+    }
+
+    public function addParkingSpotAction()
+    {
+        if (!$this->isAdmin()) {
+            return $this->redirect()->toRoute('home');
+        }
+
+        $request = $this->getRequest();
+        $message = '';
+
+        /** @var Request $request */
+        if ($request->isPost()) {
+            $postData = $request->getPost();
+            $spotNumber = $postData['spot_number'];
+
+            $adapter = $this->dbAdapter;
+            $sql = 'INSERT INTO parking_spots (spot_number, is_available) VALUES (?, 1)';
+            $statement = $adapter->createStatement($sql, [$spotNumber]);
+
+            try {
+                $statement->execute();
+                $message = 'Vaga adicionada com sucesso!';
+            } catch (\Exception $e) {
+                $message = 'Erro ao adicionar a vaga: ' . $e->getMessage();
+            }
+
+            return new ViewModel([
+                'message' => $message,
+            ]);
+        }
+
+        return new ViewModel();
+    }
+
+    public function editParkingSpotAction()
+    {
+        if (!$this->isAdmin()) {
+            return $this->redirect()->toRoute('home');
+        }
+
+        $spotId = (int) $this->params()->fromRoute('id', 0);
+        if ($spotId === 0) {
+            return $this->redirect()->toRoute('admin-parking-spots');
+        }
+
+        $adapter = $this->dbAdapter;
+        $sql = 'SELECT * FROM parking_spots WHERE spot_id = ?';
+        $statement = $adapter->createStatement($sql, [$spotId]);
+        $parkingSpot = $statement->execute()->current();
+
+        if (!$parkingSpot) {
+            return $this->redirect()->toRoute('admin-parking-spots');
+        }
+
+        $request = $this->getRequest();
+        $message = '';
+
+        /** @var Request $request */
+        if ($request->isPost()) {
+            $postData = $request->getPost();
+            $spotNumber = $postData['spot_number'];
+            $isAvailable = $postData['is_available'];
+
+            $sql = 'UPDATE parking_spots SET spot_number = ?, is_available = ? WHERE spot_id = ?';
+            $statement = $adapter->createStatement($sql, [$spotNumber, $isAvailable, $spotId]);
+
+            try {
+                $statement->execute();
+                $message = 'Vaga atualizada com sucesso!';
+            } catch (\Exception $e) {
+                $message = 'Erro ao atualizar a vaga: ' . $e->getMessage();
+            }
+        }
+
+        return new ViewModel([
+            'parkingSpot' => $parkingSpot,
+            'message' => $message,
+        ]);
+    }
+
+    public function deleteParkingSpotAction()
+    {
+        if (!$this->isAdmin()) {
+            return $this->redirect()->toRoute('home');
+        }
+
+        $spotId = (int) $this->params()->fromRoute('id', 0);
+        if ($spotId === 0) {
+            return $this->redirect()->toRoute('admin-parking-spots');
+        }
+
+        $adapter = $this->dbAdapter;
+        $sql = 'DELETE FROM parking_spots WHERE spot_id = ?';
+        $statement = $adapter->createStatement($sql, [$spotId]);
+
+        try {
+            $statement->execute();
+            $message = 'Vaga excluída com sucesso!';
+        } catch (\Exception $e) {
+            $message = 'Erro ao excluir a vaga: ' . $e->getMessage();
+        }
+
+        return $this->redirect()->toRoute('admin-parking-spots');
     }
 }

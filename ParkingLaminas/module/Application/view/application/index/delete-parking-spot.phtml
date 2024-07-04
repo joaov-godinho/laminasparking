@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Excluir Vaga</title>
+</head>
+<body>
+    <h1>Excluir Vaga</h1>
+
+    <p>Você tem certeza que deseja excluir esta vaga?</p>
+
+    <form action="" method="post">
+        <button type="submit">Confirmar Exclusão</button>
+    </form>
+
+    <?php if (!empty($message)): ?>
+        <p><?= $this->escapeHtml($message) ?></p>
+    <?php endif; ?>
+</body>
+</html>

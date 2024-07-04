@@ -19,8 +19,8 @@ return [
             'home' => [
                 'type'    => Literal::class,
                 'options' => [
-                    'route'    => '/application/parking',
-                    'defaults' => [
+                    'route'    => 'application/parking',
+                    'defaults' => [ 
                         'controller' => Controller\IndexController::class,
                         'action'     => 'index',
                     ],
@@ -112,6 +112,62 @@ return [
                     ],
                 ],
             ],
+            'admin-reports' => [
+                'type' => 'Literal',
+                'options' => [
+                    'route' => '/admin/reports',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action' => 'reports',
+                    ],
+                ],
+            ],
+            'admin-parking-spots' => [
+                'type' => 'Literal',
+                'options' => [
+                    'route' => '/admin/parking-spots',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action' => 'adminParkingSpots',
+                    ],
+                ],
+            ],
+            'admin-add-parking-spot' => [
+                'type' => 'Literal',
+                'options' => [
+                    'route' => '/admin/add-parking-spot',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action' => 'addParkingSpot',
+                    ],
+                ],
+            ],
+            'admin-edit-parking-spot' => [
+                'type' => 'Segment',
+                'options' => [
+                    'route' => '/admin/edit-parking-spot/:id',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action' => 'editParkingSpot',
+                    ],
+                    'constraints' => [
+                        'id' => '\d+',
+                    ],
+                ],
+            ],
+            'admin-delete-parking-spot' => [
+                'type' => 'Segment',
+                'options' => [
+                    'route' => '/admin/delete-parking-spot/:id',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action' => 'deleteParkingSpot',
+                    ],
+                    'constraints' => [
+                        'id' => '\d+',
+                    ],
+                ],
+            ],
             'application' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -144,6 +200,8 @@ return [
         'template_map' => [
             'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
+            'application/index/admin-panel' => __DIR__ . '/../view/application/index/admin-panel.phtml',
+            'application/index/admin-reports' => __DIR__ . '/../view/application/index/admin-reports.phtml', // Adicione esta linha
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
         ],
@@ -151,4 +209,5 @@ return [
             __DIR__ . '/../view',
         ],
     ],
+
 ];
