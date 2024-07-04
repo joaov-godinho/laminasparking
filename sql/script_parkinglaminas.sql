@@ -58,6 +58,8 @@ CREATE TABLE psusage (
     FOREIGN KEY (user_id) REFERENCES users(user_id),
     FOREIGN KEY (spot_id) REFERENCES parking_spots(spot_id)
 );
+ALTER TABLE psusage ADD COLUMN plan_id INT;
+
 
 CREATE TABLE vehicle_flow (
     flow_id INT AUTO_INCREMENT PRIMARY KEY,

@@ -80,7 +80,7 @@ CREATE TABLE `parking_spots` (
   `is_available` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`spot_id`),
   UNIQUE KEY `spot_number` (`spot_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -89,7 +89,7 @@ CREATE TABLE `parking_spots` (
 
 LOCK TABLES `parking_spots` WRITE;
 /*!40000 ALTER TABLE `parking_spots` DISABLE KEYS */;
-INSERT INTO `parking_spots` VALUES (1,'A1',0),(2,'A2',0),(3,'A3',1),(4,'A4',1),(5,'A5',1),(6,'A6',1),(7,'A7',1),(8,'A8',1),(9,'A9',1),(10,'A10',1),(11,'B1',1),(12,'B2',1),(13,'B3',1),(14,'B4',1),(15,'B5',1),(16,'B6',1),(17,'B7',1),(18,'B8',1),(19,'B9',1),(20,'B10',1),(21,'C1',1),(22,'C2',1),(23,'C3',1),(24,'C4',1),(25,'C5',1),(26,'C6',1),(27,'C7',0),(28,'C8',1),(29,'C9',1),(30,'C10',1),(31,'D1',1),(32,'D2',1),(33,'D3',1),(34,'D4',1),(35,'D5',1),(36,'D6',1),(37,'D7',1),(38,'D8',1),(39,'D9',1),(40,'D10',1),(41,'E1',1),(42,'E2',1),(43,'E3',1),(44,'E4',1),(45,'E5',1),(46,'E6',1),(47,'E7',1),(48,'E8',1),(49,'E9',1),(50,'E10',1);
+INSERT INTO `parking_spots` VALUES (1,'A1',0),(2,'A2',0),(3,'A3',1),(4,'A4',1),(5,'A5',1),(6,'A6',1),(7,'A7',1),(8,'A8',1),(9,'A9',0),(10,'A10',1),(11,'B1',1),(12,'B2',1),(13,'B3',1),(14,'B4',1),(15,'B5',1),(16,'B6',1),(17,'B7',1),(18,'B8',1),(19,'B9',1),(20,'B10',1),(21,'C1',1),(22,'C2',1),(23,'C3',1),(24,'C4',1),(25,'C5',1),(26,'C6',1),(27,'C7',0),(28,'C8',1),(29,'C9',1),(30,'C10',1),(31,'D1',1),(32,'D2',1),(33,'D3',1),(34,'D4',1),(35,'D5',1),(36,'D6',1),(37,'D7',1),(38,'D8',1),(39,'D9',1),(40,'D10',1),(41,'E1',1),(42,'E2',1),(43,'E3',1),(44,'E4',1),(45,'E5',1),(46,'E6',1),(47,'E7',1),(48,'E8',1),(49,'E9',1),(50,'E10',1);
 /*!40000 ALTER TABLE `parking_spots` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -134,12 +134,13 @@ CREATE TABLE `psusage` (
   `check_in_time` timestamp NOT NULL,
   `check_out_time` timestamp NULL DEFAULT NULL,
   `amount` decimal(10,2) DEFAULT '0.00',
+  `plan_id` int DEFAULT NULL,
   PRIMARY KEY (`usage_id`),
   KEY `user_id` (`user_id`),
   KEY `spot_id` (`spot_id`),
   CONSTRAINT `psusage_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
   CONSTRAINT `psusage_ibfk_2` FOREIGN KEY (`spot_id`) REFERENCES `parking_spots` (`spot_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -148,7 +149,7 @@ CREATE TABLE `psusage` (
 
 LOCK TABLES `psusage` WRITE;
 /*!40000 ALTER TABLE `psusage` DISABLE KEYS */;
-INSERT INTO `psusage` VALUES (1,4,1,'2024-07-03 19:00:00','2024-07-03 19:30:00',0.00),(2,4,1,'2024-07-02 19:15:00','2024-07-02 19:30:00',0.00),(3,4,2,'2024-07-24 10:00:00','2024-07-25 22:00:00',306.00),(4,5,27,'2024-07-24 10:00:00','2024-07-25 22:00:00',360.00);
+INSERT INTO `psusage` VALUES (1,4,1,'2024-07-03 19:00:00','2024-07-03 19:30:00',0.00,NULL),(2,4,1,'2024-07-02 19:15:00','2024-07-02 19:30:00',0.00,NULL),(3,4,2,'2024-07-24 10:00:00','2024-07-25 22:00:00',306.00,NULL),(4,5,27,'2024-07-24 10:00:00','2024-07-25 22:00:00',360.00,NULL),(5,21,9,'2024-07-04 19:00:00','2024-07-04 19:30:00',0.00,NULL);
 /*!40000 ALTER TABLE `psusage` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -182,7 +183,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (4,'1','alteracaoteste@teste.com','$2y$10$rZ6i.uZr12ZlVS.PCHksXOkeX1U1Vs0GulydLgLpFIJBo0Gm0I0QO',2,1,'2024-06-26 18:10:23'),(5,'2','teste2@teste.com','$2y$10$.bkA56Yq8IcCnET/H746BuhWaYKSe5XsvnDzvCCHEnV6gl3Df8wSa',2,2,'2024-06-26 18:38:48'),(6,'3','teste3@teste.com','$2y$10$arnQWk3QdP.fJwxQr8Tpge78UcJ8L49vx9z6nA4TFDKcOx8D31fYm',2,1,'2024-06-26 18:39:18'),(8,'fulano','fulano@gmail.com','$2y$10$XiuGswmyDnymRn2pSCBUq.UC6BPizlvKYkiGbrVjBgtHdklf50v8C',2,2,'2024-06-26 19:21:17'),(9,'123','123@123.com','$2y$10$lk89ZqHXFdT0LS6sru3zcukZl06ZztaGUF/OF.54T/hXnDtfGEz8a',2,2,'2024-06-26 19:51:54'),(10,'4','4@4.com','$2y$10$6o7BMJ1BHx9mN7lfMtXx6O9PuoNJHQwCNAj4wJap3YWHzxcQnzLwS',2,1,'2024-06-26 20:39:34'),(12,'testeplanos','teste5@teste.com','$2y$10$1HXNYprarvynzRDRQ.EXnuu4D3URAQO.9T1zqeSgDXqvYKJsBT2Oy',2,1,'2024-07-01 18:59:27'),(13,'teste','teste@123.com','$2y$10$NWs1/1jNCM/KzOYwShLqNOlvaZ/F8Jk4xiLD5n.e8mRlumQt./tSa',2,2,'2024-07-01 20:47:20'),(21,'admin','admin@admin.com','$2y$10$8MLaptZjSJ0D.7KHgHKsLOf.2LOldcy1MhfqcaaIn5kEJE/wkKW/C',1,1,'2024-07-02 20:29:00');
+INSERT INTO `users` VALUES (4,'1','alteracaoteste@teste.com','$2y$10$rZ6i.uZr12ZlVS.PCHksXOkeX1U1Vs0GulydLgLpFIJBo0Gm0I0QO',2,1,'2024-06-26 18:10:23'),(5,'2','teste2@teste.com','$2y$10$.bkA56Yq8IcCnET/H746BuhWaYKSe5XsvnDzvCCHEnV6gl3Df8wSa',2,2,'2024-06-26 18:38:48'),(6,'3','teste3@teste.com','$2y$10$arnQWk3QdP.fJwxQr8Tpge78UcJ8L49vx9z6nA4TFDKcOx8D31fYm',2,1,'2024-06-26 18:39:18'),(8,'fulano','fulano@gmail.com','$2y$10$XiuGswmyDnymRn2pSCBUq.UC6BPizlvKYkiGbrVjBgtHdklf50v8C',2,2,'2024-06-26 19:21:17'),(9,'123','123@123.com','$2y$10$lk89ZqHXFdT0LS6sru3zcukZl06ZztaGUF/OF.54T/hXnDtfGEz8a',2,2,'2024-06-26 19:51:54'),(12,'testeplanos','teste5@teste.com','$2y$10$1HXNYprarvynzRDRQ.EXnuu4D3URAQO.9T1zqeSgDXqvYKJsBT2Oy',2,1,'2024-07-01 18:59:27'),(21,'admin','admin@admin.com','$2y$10$8MLaptZjSJ0D.7KHgHKsLOf.2LOldcy1MhfqcaaIn5kEJE/wkKW/C',1,1,'2024-07-02 20:29:00');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -255,4 +256,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-02 19:58:10
+-- Dump completed on 2024-07-04 17:46:51
