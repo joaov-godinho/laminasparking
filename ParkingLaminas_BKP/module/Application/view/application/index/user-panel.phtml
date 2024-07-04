@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel de Usuário</title>
+</head>
+<body>
+    <h1>Painel de Usuário</h1>
+    <form action="/user-panel" method="post">
+        <label for="username">Nome de Usuário:</label>
+        <input type="text" id="username" name="username" value="<?php echo $this->escapeHtml($username); ?>" required><br><br>
+
+        <label for="password">Nova Senha:</label>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <input type="submit" value="Atualizar">
+    </form>
+
+    <?php if (isset($message)): ?>
+        <p><?php echo $this->escapeHtml($message); ?></p>
+    <?php endif; ?>
+</body>
+</html>

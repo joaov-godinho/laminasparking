@@ -1,0 +1,35 @@
+<!-- module/Application/view/application/index/register.phtml -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro de Usuário</title>
+</head>
+<body>
+    <h1>Registro de Usuário</h1>
+    <form action="/register" method="post">
+        <label for="username">Nome de Usuário:</label>
+        <input type="text" id="username" name="username" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="password">Senha:</label>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <label for="plan_id">Plano:</label>
+        <select id="plan_id" name="plan_id" required>
+            <option value="0"></option>
+            <option value="1">Pré-pago</option>
+            <option value="2">Pós-pago</option>
+        </select><br><br>
+
+        <input type="submit" value="Registrar">
+    </form>
+
+    <?php if (isset($message)): ?>
+        <p><?php echo $this->escapeHtml($message); ?></p>
+    <?php endif; ?>
+</body>
+</html>

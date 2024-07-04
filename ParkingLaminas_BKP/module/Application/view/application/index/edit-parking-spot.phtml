@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Vaga</title>
+</head>
+<body>
+    <h1>Editar Vaga</h1>
+
+    <form action="" method="post">
+        <label for="spot_number">Número da Vaga:</label>
+        <input type="text" id="spot_number" name="spot_number" value="<?= $this->escapeHtml($parkingSpot['spot_number']) ?>" required>
+
+        <label for="is_available">Disponível:</label>
+        <select id="is_available" name="is_available">
+            <option value="1" <?= $parkingSpot['is_available'] ? 'selected' : '' ?>>Sim</option>
+            <option value="0" <?= !$parkingSpot['is_available'] ? 'selected' : '' ?>>Não</option>
+        </select>
+
+        <button type="submit">Atualizar</button>
+    </form>
+
+    <?php if (!empty($message)): ?>
+        <p><?= $this->escapeHtml($message) ?></p>
+    <?php endif; ?>
+</body>
+</html>

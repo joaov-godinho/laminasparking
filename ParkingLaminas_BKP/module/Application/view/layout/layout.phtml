@@ -1,0 +1,152 @@
+<?php
+/**
+ * @var Laminas\View\Renderer\PhpRenderer $this
+ */
+?>
+<?= $this->doctype() ?>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <?= $this->headTitle('Parking with Laminas')->setSeparator(' - ')->setAutoEscape(false) ?>
+    <?= $this->headMeta()
+        ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+        ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+    ?>
+    <!-- Le styles -->
+    <?= $this->headLink([
+                            'rel' => 'shortcut icon',
+                            'type' => 'image/vnd.microsoft.icon',
+                            'href' => $this->basePath() . '/img/favicon.ico'
+                        ])
+        ->prependStylesheet($this->basePath('css/style.css'))
+        ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
+    ?>
+    <!-- Scripts -->
+    <?= $this->headScript() ?>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* Estilos para o menu de login */
+        #login-menu {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 100px;
+            background: white;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 500;
+        }
+        #login-icon {
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark mb-4" role="navigation">
+        <div class="container">
+            <a class="navbar-brand" href="/application/parking">
+                <span class="navbar-text text-light">ParkingWL</span>
+            </a>
+            <a class="navbar-brand" href="/application/reserva">
+                <span class="navbar-text text-light">Reserva</span>
+            </a>
+            <a class="navbar-brand" href="/application/contato">
+                <span class="navbar-text text-light">Contato</span>
+            </a>
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto">
+                    <?php
+                    $session = new Laminas\Session\Container('user');
+                    if ($session->offsetExists('userId')): ?>
+                        <li class="nav-item">
+                            <span class="nav-link">Bem-vindo, <?= $this->escapeHtml($session->username); ?>!</span>
+                        </li>
+
+                        <li class="nav-item">
+                            <?php
+                                $session = new \Laminas\Session\Container('user');
+                                if ($session->offsetExists('accessLevelId') && $session->accessLevelId == 1): ?>
+                                    <a class="btn btn-link nav-link" href="/admin" class="admin-button">Painel de Administração</a>
+                            <?php endif; ?>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="btn btn-link nav-link" href="/user-panel">Painel de Usuário</a>
+                        </li>
+                        <li class="nav-item">
+                            <form action="/logout" method="post">
+                                <button type="submit" class="btn btn-link nav-link">Logout</button>
+                            </form>
+                        </li>
+                    <?php else: ?>
+                        <li class="nav-item">
+                            <a href="#" id="login-icon">
+                                <i class="fas fa-user"></i> <!-- Ícone de usuário do Font Awesome -->
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <?= $this->content ?>
+        <hr>
+
+        <!-- Adicione o script jQuery (ou use vanilla JS) -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#login-icon').click(function(event) {
+                    event.preventDefault();
+                    $('#login-menu').toggle(); // Exibe/oculta o menu de login
+                });
+
+                $(document).click(function(event) {
+                    if (!$(event.target).closest('#login-icon, #login-menu').length) {
+                        $('#login-menu').hide();
+                    }
+                });
+            });
+        </script>
+
+        <footer class="container-fluid text-center">
+            <p>Parking with Laminas - Rua XYZ, 7070 - Centro, Videira - SC, 00000-000</p>
+        </footer>
+
+        <!-- Menu de Login -->
+        <div id="login-menu" style="display:none;">
+            <div>
+                <h2>Login</h2>
+                <form action="/login" method="post">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password">
+                    <button type="submit">Login</button>
+                </form>
+                <div style="margin-top: 10px;">
+                    <button onclick="window.location.href='/register'">Registre-se</button>
+                </div>
+            </div>
+        </div>
+
+        <?= $this->inlineScript()->prependFile($this->basePath('js/bootstrap.min.js')) ?>
+    </div>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Relatórios Gerenciais</title>
+</head>
+<body>
+    <h1>Relatórios Gerenciais</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Usuário</th>
+                <th>Vaga</th>
+                <th>Check-in</th>
+                <th>Check-out</th>
+                <th>Valor</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($reportData as $data): ?>
+                <tr>
+                    <td><?= $this->escapeHtml($data['usage_id']) ?></td>
+                    <td><?= $this->escapeHtml($data['username']) ?></td>
+                    <td><?= $this->escapeHtml($data['spot_number']) ?></td>
+                    <td><?= $this->escapeHtml($data['check_in_time']) ?></td>
+                    <td><?= $this->escapeHtml($data['check_out_time']) ?></td>
+                    <td><?= $this->escapeHtml($data['amount']) ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+
+    <h2>Relatório Financeiro</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID do Usuário</th>
+                <th>ID do Plano</th>
+                <th>Montante Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($financialReport as $report): ?>
+                <tr>
+                    <td><?= $this->escapeHtml($report['user_id']) ?></td>
+                    <td><?= $this->escapeHtml($report['plan_id']) ?></td>
+                    <td><?= $this->escapeHtml($report['total_amount']) ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</body>
+</html>
+
